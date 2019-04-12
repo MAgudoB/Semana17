@@ -13,16 +13,16 @@ $(document).ready(function () {
 function init() {
 	container = document.createElement('div');
 	document.body.appendChild(container);
+	setRenderer();
 	setCamera();
 	setControls();
 	setScene();
 	setModel();
 	setLight();
-	setRenderer();
 	window.addEventListener('resize', onWindowResize, false);
 	// stats
-	stats = new Stats();
-	container.appendChild(stats.dom);
+	//stats = new Stats();
+	//container.appendChild(stats.dom);
 }
 
 function onWindowResize() {
@@ -35,25 +35,25 @@ function onWindowResize() {
 }
 
 function animate() {
-	angulo += girando / 10;
-	posz += Math.cos(angulo) * avance * 3
-	posx += Math.sin(angulo) * avance * 3
+	angle += rotating / 10;
+	posz += Math.cos(angle) * advance * 3
+	posx += Math.sin(angle) * advance * 3
 
 	camera.position.x = posx
 	camera.position.z = posz - 400
 
-	personaje.position.z = posz
-	personaje.position.x = posx
-	personaje.rotation.y = angulo;
+	player.position.z = posz
+	player.position.x = posx
+	player.rotation.y = angle;
 	requestAnimationFrame(animate);
-	if (avance == 1) {
+	if (advance == 1) {
 		var delta = clock.getDelta();
 
 		if (mixer) mixer.update(delta);
 	}
 
+	//controls.update();
 	renderer.render(scene, camera);
-
-	stats.update();
+	//stats.update();
 
 }
