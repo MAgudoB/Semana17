@@ -16,19 +16,11 @@ function init() {
 	setModel();
 	setLight();
 	setRenderer();
+	createStar();
 	window.addEventListener( 'resize', onWindowResize, false );
 	// stats
 	stats = new Stats();
 	container.appendChild( stats.dom );
-}
-
-function onWindowResize() {
-
-	camera.aspect = window.innerWidth / window.innerHeight;
-	camera.updateProjectionMatrix();
-
-	renderer.setSize( window.innerWidth, window.innerHeight );
-
 }
 
 function animate() {
