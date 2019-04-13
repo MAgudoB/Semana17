@@ -19,7 +19,6 @@ function init() {
 	setScene();
 	setModel();
 	setLight();
-	setRenderer();
 	createStar();
 	window.addEventListener('resize', onWindowResize, false);
 	// stats
