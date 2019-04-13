@@ -43,7 +43,6 @@ function animate() {
 
 		if (mixer) mixer.update(delta);
 	}
-
 	//controls.update();
 	renderer.render(scene, camera);
 	//stats.update();
