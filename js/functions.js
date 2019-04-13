@@ -7,6 +7,7 @@ $(document).keypress(function (event) {
 	if (event.which == 97) { rotating = 1; }
 	// Esto es lo que pasa cuando pulso la D
 	if (event.which == 100) { rotating = -1; }
+	if (event.which == 32 && player.canJump) { player.jumping = true; player.canJump = false; }
 });
 $(document).keyup(function (event) {
 	// Esto es lo que pasa cuando pulso la W

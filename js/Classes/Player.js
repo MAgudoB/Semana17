@@ -3,6 +3,10 @@ function Player(posX, posY, posZ, mesh, animations) {
     SceneObject.call(this, posX, posY, posZ, mesh);
     this.angle = 0;
     this.speed = 3;
+    this.jumping = false;
+    this.canJump = true;
+    this.jumpSpeed = 3;
+    this.jumpHeight = 50;
 
     this.loadModel = function () {
         loader.load('fbx/Walking.fbx', function (object) {
@@ -37,5 +41,20 @@ function Player(posX, posY, posZ, mesh, animations) {
         playerObj.position.x = this.x;
         playerObj.rotation.y = this.angle;
         playerObj.position.z = this.z;
+        this.jump();
+    }
+
+    this.jump = function () {
+        if (playerObj.position.y >= this.jumpHeight) {
+            this.jumping = false;
+        }
+        if (this.jumping) {
+            playerObj.position.y += this.jumpSpeed;
+        } else if (!this.jumping && !this.canJump) {
+            playerObj.position.y -= this.jumpSpeed;
+        }
+        if (playerObj.position.y <= 0) {
+            this.canJump = true;
+        }
     }
 }
