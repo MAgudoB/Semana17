@@ -89,6 +89,7 @@ function setLight() {
 	player.add(light);
 }
 
+
 /*function createStar() {
 	new THREE.MTLLoader()
 		.setPath('fbx/star/')
@@ -105,6 +106,12 @@ function setLight() {
 				});
 		});
 }*/
+
+function createStar(posX, posY, posZ) {
+	var newStar = new Star(posX, posY, posZ);
+	stars.push(newStar);
+	scene.add(newStar);
+}
 
 function onWindowResize() {
 
