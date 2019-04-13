@@ -11,3 +11,4 @@ var clock = new THREE.Clock();
 var loader = new THREE.FBXLoader();
 var light = new THREE.HemisphereLight(0xffffff, 0x444444);
 var mixer;
+var stars = new Array();

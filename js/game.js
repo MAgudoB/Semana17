@@ -19,7 +19,7 @@ function init() {
 	setScene();
 	setModel();
 	setLight();
-	createStar();
+	createStar(50, 100, 50);
 	window.addEventListener('resize', onWindowResize, false);
 	// stats
 	//stats = new Stats();
@@ -40,12 +40,7 @@ function animate() {
 	requestAnimationFrame(animate);
 	if (advance == 1) {
 		var delta = clock.getDelta();
-
 		if (mixer) mixer.update(delta);
 	}
-
-	//controls.update();
 	renderer.render(scene, camera);
-	//stats.update();
-
 }
