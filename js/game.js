@@ -1,10 +1,8 @@
-if (WEBGL.isWebGLAvailable() === false) {
-
-	document.body.appendChild(WEBGL.getWebGLErrorMessage());
-
-}
-
 $(document).ready(function () {
+	if (WEBGL.isWebGLAvailable() === false) {
+		document.body.appendChild(WEBGL.getWebGLErrorMessage());
+	}
+
 	init();
 	animate();
 });
@@ -17,9 +15,10 @@ function init() {
 	setCamera();
 	setControls();
 	setScene();
-	setModel();
-	setLight();
+	//setModel();
 	createStar(50, 100, 50);
+	player = new Player(0, 100, 0, undefined, undefined);
+	setLight();
 	window.addEventListener('resize', onWindowResize, false);
 	// stats
 	//stats = new Stats();
@@ -27,20 +26,16 @@ function init() {
 }
 
 function animate() {
-	angle += rotating / 10;
-	posz += Math.cos(angle) * advance * 3
-	posx += Math.sin(angle) * advance * 3
-
-	camera.position.x = posx
-	camera.position.z = posz - 400
-
-	player.position.z = posz
-	player.position.x = posx
-	player.rotation.y = angle;
+	player.movePlayer();
+	/*camera.position.x = player.object.position.x;
+	camera.position.z = player.object.position.z - 400;*/
+	camera.position.x = playerObj.position.x;
+	camera.position.z = playerObj.position.z - 400;
 	requestAnimationFrame(animate);
 	if (advance == 1) {
 		var delta = clock.getDelta();
 		if (mixer) mixer.update(delta);
 	}
+	controls.update();
 	renderer.render(scene, camera);
 }

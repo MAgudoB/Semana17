@@ -60,7 +60,7 @@ function setRenderer() {
 	container.appendChild(renderer.domElement);
 }
 
-function setModel() {
+/*function setModel() {
 	loader.load('fbx/Walking.fbx', function (object) {
 		mixer = new THREE.AnimationMixer(object);
 		var action = mixer.clipAction(object.animations[0]);
@@ -74,7 +74,7 @@ function setModel() {
 		});
 		scene.add(object);
 	});
-}
+}*/
 
 function setLight() {
 	light.position.set(posx, posy + 200, posz);
@@ -86,7 +86,8 @@ function setLight() {
 	light.shadow.camera.bottom = - 100;
 	light.shadow.camera.left = - 120;
 	light.shadow.camera.right = 120;
-	player.add(light);
+	//player.object.add(light);
+	playerObj.add(light);
 }
 
 
@@ -120,4 +121,18 @@ function onWindowResize() {
 
 	renderer.setSize(window.innerWidth, window.innerHeight);
 
+}
+
+// Todo: collision
+function checkCollision() {
+	/*for (var vertexIndex = 0; vertexIndex < MovingCube.geometry.vertices.length; vertexIndex++) {
+		var localVertex = MovingCube.geometry.vertices[vertexIndex].clone();
+		var globalVertex = localVertex.applyMatrix4(MovingCube.matrix);
+		var directionVector = globalVertex.sub(MovingCube.position);
+
+		var ray = new THREE.Raycaster(originPoint, directionVector.clone().normalize());
+		var collisionResults = ray.intersectObjects(collidableMeshList);
+		if (collisionResults.length > 0 && collisionResults[0].distance < directionVector.length())
+			appendText(" Hit ");
+	}*/
 }
