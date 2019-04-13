@@ -16,3 +16,4 @@ var star = new THREE.Object3D();
 var stars = new Array();
 var player = undefined;
 var playerObj = new THREE.Object3D();
+var collidableMeshList = [];

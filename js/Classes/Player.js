@@ -23,6 +23,9 @@ function Player(posX, posY, posZ, mesh, animations) {
             scene.add(object);
             this.object = object;
             playerObj = object;
+            var geometry = new THREE.CubeGeometry(playerObj.position.x, playerObj.position.y, playerObj.position.z);
+            var material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+            playerObj.mesh = new THREE.Mesh(geometry, material);
         });
     }
 
@@ -41,6 +44,7 @@ function Player(posX, posY, posZ, mesh, animations) {
         playerObj.position.x = this.x;
         playerObj.rotation.y = this.angle;
         playerObj.position.z = this.z;
+        if (playerObj.mesh != undefined) playerObj.mesh.position.set(playerObj.position.x, playerObj.position.y, playerObj.position.z);
         this.jump();
     }
 

@@ -27,14 +27,18 @@ function init() {
 
 function animate() {
 	player.movePlayer();
+	for (var i in stars) {
+		collide(stars[i]);
+	}
 	/*camera.position.x = player.object.position.x;
 	camera.position.z = player.object.position.z - 400;*/
 	camera.position.x = playerObj.position.x;
 	camera.position.z = playerObj.position.z - 400;
 	requestAnimationFrame(animate);
-	if (advance == 1) {
+	if (advance != 0) {
 		var delta = clock.getDelta();
-		if (mixer) mixer.update(delta);
+		if (mixer) mixer.update(delta * advance);
 	}
+
 	renderer.render(scene, camera);
 }
