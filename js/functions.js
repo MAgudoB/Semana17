@@ -21,6 +21,13 @@ $(document).keyup(function (event) {
 	if (event.which == 68) { rotating = 0; }
 });
 
+function loadTextures() {
+	grassTexture = new THREE.TextureLoader().load("img/grass.jpg");
+	grassTexture.wrapS = THREE.RepeatWrapping;
+	grassTexture.wrapT = THREE.RepeatWrapping;
+	grassTexture.repeat.set(1, 1);
+}
+
 function setCamera() {
 	camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
 	camera.position.set(0, 200, -300);
@@ -40,18 +47,13 @@ function setControls() {
 function setScene() {
 	scene = new THREE.Scene();
 	scene.background = new THREE.Color(0xa0a0a0);
-	scene.fog = new THREE.Fog(0xa0a0a0, 200, 1000);
+	//scene.fog = new THREE.Fog(0xa0a0a0, 200, 1000);
 
 	// ground
-	var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(2000, 2000), new THREE.MeshPhongMaterial({ color: 0x999999, depthWrite: false }));
+	var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(2000, 2000), new THREE.MeshPhongMaterial({ map: grassTexture, depthWrite: false }));
 	mesh.rotation.x = - Math.PI / 2;
 	mesh.receiveShadow = true;
 	scene.add(mesh);
-
-	var grid = new THREE.GridHelper(2000, 20, 0x000000, 0x000000);
-	grid.material.opacity = 0.2;
-	grid.material.transparent = true;
-	scene.add(grid);
 }
 
 function setRenderer() {
@@ -140,16 +142,56 @@ function onWindowResize() {
 
 }
 
-// Todo: collision
-function checkCollision() {
-	/*for (var vertexIndex = 0; vertexIndex < MovingCube.geometry.vertices.length; vertexIndex++) {
-		var localVertex = MovingCube.geometry.vertices[vertexIndex].clone();
-		var globalVertex = localVertex.applyMatrix4(MovingCube.matrix);
-		var directionVector = globalVertex.sub(MovingCube.position);
 
-		var ray = new THREE.Raycaster(originPoint, directionVector.clone().normalize());
-		var collisionResults = ray.intersectObjects(collidableMeshList);
-		if (collisionResults.length > 0 && collisionResults[0].distance < directionVector.length())
-			appendText(" Hit ");
-	}*/
+function initPhysics() {
+	// Physics configuration
+	collisionConfiguration = new Ammo.btSoftBodyRigidBodyCollisionConfiguration();
+	dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration);
+	broadphase = new Ammo.btDbvtBroadphase();
+	solver = new Ammo.btSequentialImpulseConstraintSolver();
+	softBodySolver = new Ammo.btDefaultSoftBodySolver();
+	physicsWorld = new Ammo.btSoftRigidDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration, softBodySolver);
+	physicsWorld.setGravity(new Ammo.btVector3(0, gravityConstant, 0));
+	physicsWorld.getWorldInfo().set_m_gravity(new Ammo.btVector3(0, gravityConstant, 0));
+}
+
+
+function updatePhysics(deltaTime) {
+	// Step world
+	physicsWorld.stepSimulation(deltaTime, 10);
+	// Update rigid bodies
+	for (var i = 0, il = rigidBodies.length; i < il; i++) {
+		var objThree = rigidBodies[i];
+		var objPhys = objThree.userData.physicsBody;
+		var ms = objPhys.getMotionState();
+		if (ms) {
+			ms.getWorldTransform(transformAux1);
+			var p = transformAux1.getOrigin();
+			var q = transformAux1.getRotation();
+			objThree.position.set(p.x(), p.y(), p.z());
+			objThree.quaternion.set(q.x(), q.y(), q.z(), q.w());
+		}
+	}
+}
+
+function createRigidBody(threeObject, physicsShape, mass, pos, quat) {
+	threeObject.position.copy(pos);
+	threeObject.quaternion.copy(quat);
+	var transform = new Ammo.btTransform();
+	transform.setIdentity();
+	transform.setOrigin(new Ammo.btVector3(pos.x, pos.y, pos.z));
+	transform.setRotation(new Ammo.btQuaternion(quat.x, quat.y, quat.z, quat.w));
+	var motionState = new Ammo.btDefaultMotionState(transform);
+	var localInertia = new Ammo.btVector3(0, 0, 0);
+	physicsShape.calculateLocalInertia(mass, localInertia);
+	var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, physicsShape, localInertia);
+	var body = new Ammo.btRigidBody(rbInfo);
+	threeObject.userData.physicsBody = body;
+	scene.add(threeObject);
+	if (mass > 0) {
+		rigidBodies.push(threeObject);
+		// Disable deactivation
+		body.setActivationState(4);
+	}
+	physicsWorld.addRigidBody(body);
 }

@@ -18,5 +18,23 @@ var star = new THREE.Object3D();
 var stars = new Array();
 var player = undefined;
 var playerObj = new THREE.Object3D();
+
+// Physics variables
+var gravityConstant = - 9.8;
+var collisionConfiguration;
+var dispatcher;
+var broadphase;
+var solver;
+var softBodySolver;
+var physicsWorld;
+var rigidBodies = [];
+var margin = 0.05;
+var hinge;
+var rope;
+var transformAux1 = new Ammo.btTransform();
+
+// Images
+var grassTexture;
+
 var collidableMeshList = [];
 var jump;
