@@ -233,3 +233,10 @@ function updatePhysics(deltaTime) {
 		}
 	}
 }
+
+function checkCollectedStars() {
+	$("#starsAmount").html(collectedStars);
+	if (collectedStars >= 3) {
+		console.log("Win");
+	}
+}

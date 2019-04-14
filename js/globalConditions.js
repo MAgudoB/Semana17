@@ -39,3 +39,5 @@ var grassTexture;
 
 var collidableMeshList = [];
 var jump;
+
+var collectedStars = 0;

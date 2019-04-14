@@ -18,3 +18,20 @@ body {
 	color: #046;
 	font-weight: bold;
 }
+
+#starsHud{
+	position: absolute;
+	text-align: right;
+	width: 100%;
+	font-size: 20px;
+	z-index: 1;
+}
+
+canvas{
+	position: absolute;
+}
+
+audio{
+	position: absolute;
+	z-index: 1;
+}

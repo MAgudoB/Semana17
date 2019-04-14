@@ -19,7 +19,10 @@ function init() {
 	setScene();
 	//setModel();
 	createStar(50, 100, 50);
+	createStar(300, 100, 50);
+	createStar(0, 100, 250);
 	player = new Player(0, 100, 0, undefined, undefined);
+	collectedStars = 0;
 	setLight();
 	initPhysics();
 	createObjects();
@@ -36,6 +39,7 @@ function animate() {
 		if (collided) {
 			scene.remove(stars[i]);
 			stars.splice(i, 1);
+			collectedStars++;
 		}
 	}
 	/*camera.position.x = player.object.position.x;
@@ -65,5 +69,6 @@ function animate() {
 		if (mixer) { mixer.update(delta); }
 	}
 	updatePhysics(delta);
+	checkCollectedStars();
 	renderer.render(scene, camera);
 }
