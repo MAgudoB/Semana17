@@ -171,7 +171,14 @@ function createObjects() {
 		ground.material.map = texture;
 		ground.material.needsUpdate = true;
 	});
-	var brick = createParalellepiped(50, 50, 50, 1, new THREE.Vector3(0, 15, 150), new THREE.Quaternion(0, 0, 0, 1), createMaterial());
+	var mass = 1;
+	var sx = 50;
+	var sy = 50;
+	var sz = 50;
+	var brick = createParalellepiped(sx, sy, sz, mass, new THREE.Vector3(0, 15, 150), new THREE.Quaternion(0, 0, 0, 1), createMaterial());
+	brick.castShadow = true;
+	brick.receiveShadow = true;
+	brick2 = createParalellepiped(sx, sy, sz, mass, new THREE.Vector3(45, 100, 150), new THREE.Quaternion(0, 0, 0, 1), createMaterial());
 	brick.castShadow = true;
 	brick.receiveShadow = true;
 }

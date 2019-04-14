@@ -31,7 +31,7 @@ function Player(posX, posY, posZ, mesh, animations) {
                 //scene.add(playerObj);
                 var shape = new Ammo.btBoxShape(new Ammo.btVector3(playerObj.scale.x * 0.5, playerObj.scale.y * 0.5, playerObj.scale.z * 0.5));
                 shape.setMargin(margin);
-                createRigidBody(playerObj, shape, 0.3, new THREE.Vector3(0, 1, 0), new THREE.Quaternion(0, 0, 0, 1));
+                createRigidBody(playerObj, shape, 1, new THREE.Vector3(0, 1, 0), new THREE.Quaternion(0, 0, 0, 1));
             });
         });
     }
