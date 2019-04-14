@@ -35,10 +35,19 @@ function animate() {
 	camera.position.x = playerObj.position.x;
 	camera.position.z = playerObj.position.z - 400;
 	requestAnimationFrame(animate);
-	if (advance != 0) {
-		var delta = clock.getDelta();
+	var delta = clock.getDelta();
+	if (advance != 0 && player.canJump && !player.jumpAction.isRunning()) {
+		playerObj.walkAction.play();
+		playerObj.jumpAction.stop();
 		if (mixer) mixer.update(delta * advance);
 	}
-
+	if (!player.canJump) {
+		if (!playerObj.jumpAction.isRunning()) {
+			playerObj.jumpAction.play();
+			playerObj.walkAction.stop();
+			playerObj.walkAction.reset();
+		}
+		if (mixer) mixer.update(delta);
+	}
 	renderer.render(scene, camera);
 }
