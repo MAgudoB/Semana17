@@ -4,7 +4,7 @@ $(document).ready(function () {
 	}
 
 	init();
-	setTimeout(function () { animate() }, 1000);
+	setTimeout(function () { animate() }, 1500);
 	// animate();
 });
 
@@ -44,12 +44,8 @@ function animate() {
 		// playerObj.standByAction.stop();
 		playerObj.jumpAction.setLoop(THREE.LoopRepeat, 1);
 		playerObj.jumpAction.play();
-		if (playerObj.jumpAction.time < 0.6) {
-			//Nothing to do
-		} else if (playerObj.jumpAction.time < 1.1) {
-			player.jump(false);
-		} else {
-			player.jump(true);
+		if (playerObj.jumpAction.time > 0.6) {
+			player.jump(player.jumpSpeed);
 		}
 		if (mixer) { mixer.update(delta); }
 	} else if (advance != 0 && !player.jumping) {
