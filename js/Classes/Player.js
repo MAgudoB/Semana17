@@ -28,7 +28,10 @@ function Player(posX, posY, posZ, mesh, animations) {
                 mixer = new THREE.AnimationMixer(playerObj);
                 playerObj.walkAction = mixer.clipAction(playerObj.animations[0]);
                 playerObj.jumpAction = mixer.clipAction(playerObj.animations[2]);
-                scene.add(playerObj);
+                //scene.add(playerObj);
+                var shape = new Ammo.btBoxShape(new Ammo.btVector3(playerObj.scale.x * 0.5, playerObj.scale.y * 0.5, playerObj.scale.z * 0.5));
+                shape.setMargin(margin);
+                createRigidBody(playerObj, shape, 0.3, new THREE.Vector3(0, 1, 0), new THREE.Quaternion(0, 0, 0, 1));
             });
         });
     }
@@ -37,12 +40,6 @@ function Player(posX, posY, posZ, mesh, animations) {
     this.loadModel();
 
     this.movePlayer = function () {
-        /*this.angle += rotating / 10;
-        this.z += Math.cos(this.angle) * advance * this.speed;
-        this.x += Math.sin(this.angle) * advance * this.speed;
-        this.object.position.x = this.x;
-        this.object.rotation.y = this.angle;
-        this.object.position.z = this.z;*/
         this.angle += rotating / 10;
         this.z += Math.cos(this.angle) * advance * this.speed;
         this.x += Math.sin(this.angle) * advance * this.speed;

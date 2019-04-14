@@ -21,15 +21,8 @@ function init() {
 	createStar(50, 100, 50);
 	player = new Player(0, 100, 0, undefined, undefined);
 	setLight();
-	//////////////////   
-	var cubeGeometry = new THREE.BoxGeometry(50, 50, 50);
-	var cubeMaterial = new THREE.MeshLambertMaterial({ color: 0xff2255 });
-	var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-	cube.name = 'cube';
-	cube.position.set(0, 15, 50);
-	scene.add(cube);
-	////////////////////
 	initPhysics();
+	createObjects();
 	window.addEventListener('resize', onWindowResize, false);
 	// stats
 	//stats = new Stats();
@@ -69,5 +62,6 @@ function animate() {
 		// playerObj.standByAction.reset();
 		// playerObj.standByAction.play();
 	}
+	updatePhysics(delta);
 	renderer.render(scene, camera);
 }
