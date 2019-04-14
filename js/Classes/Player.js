@@ -4,7 +4,7 @@ function Player(posX, posY, posZ, mesh, animations) {
     this.angle = 0;
     this.speed = 3;
     this.jumping = false;
-    this.jumpSpeed = 5000;
+    this.jumpSpeed = 17;
 
     this.loadModel = function () {
 
@@ -50,14 +50,14 @@ function Player(posX, posY, posZ, mesh, animations) {
     }
 
     this.jump = function (speed) {
-        this.jumpSpeed += gravityConstant;
+        this.jumpSpeed -= 1;
         playerObj.position.y += this.jumpSpeed;
         if (playerObj.position.y <= 0) {
             playerObj.position.y = 0;
             playerObj.jumpAction.stop();
             playerObj.jumpAction.reset();
             this.jumping = false;
-            this.jumpSpeed = 5000;
+            this.jumpSpeed = 17;
         }
     }
 }

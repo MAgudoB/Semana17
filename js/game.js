@@ -44,7 +44,7 @@ function animate() {
 		// playerObj.standByAction.stop();
 		playerObj.jumpAction.setLoop(THREE.LoopRepeat, 1);
 		playerObj.jumpAction.play();
-		if (playerObj.jumpAction.time > 0.6) {
+		if (playerObj.jumpAction.time > 0.8) {
 			player.jump(player.jumpSpeed);
 		}
 		if (mixer) { mixer.update(delta); }
@@ -58,6 +58,6 @@ function animate() {
 		// playerObj.standByAction.reset();
 		// playerObj.standByAction.play();
 	}
-	updatePhysics(delta);
+	// updatePhysics(delta);
 	renderer.render(scene, camera);
 }
