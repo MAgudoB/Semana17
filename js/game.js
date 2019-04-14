@@ -37,15 +37,27 @@ function init() {
 
 function animate() {
 	player.movePlayer();
+	for (var i in stars) {
+		collide(stars[i]);
+	}
 	/*camera.position.x = player.object.position.x;
 	camera.position.z = player.object.position.z - 400;*/
 	camera.position.x = playerObj.position.x;
 	camera.position.z = playerObj.position.z - 400;
 	requestAnimationFrame(animate);
-	if (advance == 1) {
-		var delta = clock.getDelta();
+	var delta = clock.getDelta();
+	if (advance != 0 && player.canJump && !player.jumpAction.isRunning()) {
+		playerObj.walkAction.play();
+		playerObj.jumpAction.stop();
+		if (mixer) mixer.update(delta * advance);
+	}
+	if (!player.canJump) {
+		if (!playerObj.jumpAction.isRunning()) {
+			playerObj.jumpAction.play();
+			playerObj.walkAction.stop();
+			playerObj.walkAction.reset();
+		}
 		if (mixer) mixer.update(delta);
 	}
-	controls.update();
 	renderer.render(scene, camera);
 }

@@ -8,10 +8,12 @@ var posy = 0;
 var posz = 0;
 var clock = new THREE.Clock();
 var loader = new THREE.FBXLoader();
+var loader2 = new THREE.FBXLoader();
 var objLoader = new THREE.OBJLoader();
 var materialLoader = new THREE.MaterialLoader();
 var light = new THREE.HemisphereLight(0xffffff, 0x444444);
 var mixer;
+var mixer2;
 var star = new THREE.Object3D();
 var stars = new Array();
 var player = undefined;
@@ -33,3 +35,6 @@ var transformAux1 = new Ammo.btTransform();
 
 // Images
 var grassTexture;
+
+var collidableMeshList = [];
+var jump;
