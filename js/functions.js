@@ -96,17 +96,12 @@ function setLight() {
 
 function collide(mesh) {
 	if (mesh != undefined && playerObj.mesh != undefined) {
-		for (var vertexIndex = 0; vertexIndex < mesh.geometry.vertices.length; vertexIndex++) {
-			var localVertex = mesh.geometry.vertices[vertexIndex].clone();
-			var globalVertex = localVertex.applyMatrix4(mesh.matrix);
-			var directionVector = globalVertex.sub(mesh.position);
-
-			var ray = new THREE.Raycaster(mesh.position.clone(), directionVector.clone().normalize());
-			var collisionResults = ray.intersectObject(playerObj.mesh);
-			if (collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()) {
-				console.log(" Hit ");
-			}
-		}
+		var firstObject = mesh;
+		var secondObject = playerObj;
+		firstBB = new THREE.Box3().setFromObject(firstObject);
+		secondBB = new THREE.Box3().setFromObject(secondObject);
+		var collision = firstBB.intersectsBox(secondBB);
+		return collision;
 	}
 }
 
@@ -212,12 +207,15 @@ function createRigidBody(threeObject, physicsShape, mass, pos, quat) {
 	}
 	physicsWorld.addRigidBody(body);
 }
+
 function createRandomColor() {
 	return Math.floor(Math.random() * (1 << 24));
 }
+
 function createMaterial() {
 	return new THREE.MeshPhongMaterial({ color: createRandomColor() });
 }
+
 function updatePhysics(deltaTime) {
 	// Step world
 	physicsWorld.stepSimulation(deltaTime, 10);

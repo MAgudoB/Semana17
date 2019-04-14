@@ -7,7 +7,6 @@ function Player(posX, posY, posZ, mesh, animations) {
     this.jumpSpeed = 17;
 
     this.loadModel = function () {
-
         loader.load('fbx/Walking.fbx', function (object) {
             playerObj = object;
             mixer = new THREE.AnimationMixer(playerObj);
@@ -26,12 +25,16 @@ function Player(posX, posY, posZ, mesh, animations) {
                 object.animations[0].name = "jump";
                 playerObj.animations.push(object.animations[0]);
                 mixer = new THREE.AnimationMixer(playerObj);
-                playerObj.walkAction = mixer.clipAction(playerObj.animations[0]);
-                playerObj.jumpAction = mixer.clipAction(playerObj.animations[2]);
-                //scene.add(playerObj);
-                var shape = new Ammo.btBoxShape(new Ammo.btVector3(playerObj.scale.x * 0.5, playerObj.scale.y * 0.5, playerObj.scale.z * 0.5));
-                shape.setMargin(margin);
-                createRigidBody(playerObj, shape, 1, new THREE.Vector3(0, 1, 0), new THREE.Quaternion(0, 0, 0, 1));
+                loader3.load('fbx/Idle.fbx', function (object) {
+                    mixer3 = new THREE.AnimationMixer(object);
+                    object.animations[0].name = "standByAction";
+                    playerObj.animations.push(object.animations[0]);
+                    mixer = new THREE.AnimationMixer(playerObj);
+                    playerObj.walkAction = mixer.clipAction(playerObj.animations[0]);
+                    playerObj.jumpAction = mixer.clipAction(playerObj.animations[2]);
+                    playerObj.standByAction = mixer.clipAction(playerObj.animations[3]);
+                    scene.add(playerObj);
+                });
             });
         });
     }
@@ -49,7 +52,7 @@ function Player(posX, posY, posZ, mesh, animations) {
         if (playerObj.mesh != undefined) playerObj.mesh.position.set(playerObj.position.x, playerObj.position.y, playerObj.position.z);
     }
 
-    this.jump = function (speed) {
+    this.jump = function () {
         this.jumpSpeed -= 1;
         playerObj.position.y += this.jumpSpeed;
         if (playerObj.position.y <= 0) {

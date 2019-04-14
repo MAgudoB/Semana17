@@ -32,7 +32,11 @@ function init() {
 function animate() {
 	player.movePlayer();
 	for (var i in stars) {
-		collide(stars[i]);
+		var collided = collide(stars[i]);
+		if (collided) {
+			scene.remove(stars[i]);
+			stars.splice(i, 1);
+		}
 	}
 	/*camera.position.x = player.object.position.x;
 	camera.position.z = player.object.position.z - 400;*/
@@ -41,23 +45,25 @@ function animate() {
 	requestAnimationFrame(animate);
 	var delta = clock.getDelta();
 	if (player.jumping) {
-		// playerObj.standByAction.stop();
+		playerObj.standByAction.stop();
+		playerObj.standByAction.reset();
 		playerObj.jumpAction.setLoop(THREE.LoopRepeat, 1);
 		playerObj.jumpAction.play();
-		if (playerObj.jumpAction.time > 0.8) {
+		if (playerObj.jumpAction.time > 0.6) {
 			player.jump(player.jumpSpeed);
 		}
 		if (mixer) { mixer.update(delta); }
 	} else if (advance != 0 && !player.jumping) {
-		// playerObj.standByAction.stop();
+		playerObj.standByAction.stop();
+		playerObj.standByAction.reset();
 		playerObj.walkAction.play();
 		if (mixer) { mixer.update(delta * advance); }
 	} else {
 		playerObj.walkAction.stop();
 		playerObj.walkAction.reset();
-		// playerObj.standByAction.reset();
-		// playerObj.standByAction.play();
+		playerObj.standByAction.play();
+		if (mixer) { mixer.update(delta); }
 	}
-	// updatePhysics(delta);
+	updatePhysics(delta);
 	renderer.render(scene, camera);
 }
