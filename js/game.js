@@ -4,7 +4,8 @@ $(document).ready(function () {
 	}
 
 	init();
-	animate();
+	setTimeout(function () { animate() }, 1000);
+	// animate();
 });
 
 
@@ -36,18 +37,27 @@ function animate() {
 	camera.position.z = playerObj.position.z - 400;
 	requestAnimationFrame(animate);
 	var delta = clock.getDelta();
-	if (advance != 0 && player.canJump && !player.jumpAction.isRunning()) {
-		playerObj.walkAction.play();
-		playerObj.jumpAction.stop();
-		if (mixer) mixer.update(delta * advance);
-	}
-	if (!player.canJump) {
-		if (!playerObj.jumpAction.isRunning()) {
-			playerObj.jumpAction.play();
-			playerObj.walkAction.stop();
-			playerObj.walkAction.reset();
+	if (player.jumping) {
+		// playerObj.standByAction.stop();
+		playerObj.jumpAction.setLoop(THREE.LoopRepeat, 1);
+		playerObj.jumpAction.play();
+		if (playerObj.jumpAction.time < 0.6) {
+			//Nothing to do
+		} else if (playerObj.jumpAction.time < 1.1) {
+			player.jump(false);
+		} else {
+			player.jump(true);
 		}
-		if (mixer) mixer.update(delta);
+		if (mixer) { mixer.update(delta); }
+	} else if (advance != 0 && !player.jumping) {
+		// playerObj.standByAction.stop();
+		playerObj.walkAction.play();
+		if (mixer) { mixer.update(delta * advance); }
+	} else {
+		playerObj.walkAction.stop();
+		playerObj.walkAction.reset();
+		// playerObj.standByAction.reset();
+		// playerObj.standByAction.play();
 	}
 	renderer.render(scene, camera);
 }

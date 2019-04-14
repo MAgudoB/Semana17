@@ -4,9 +4,7 @@ function Player(posX, posY, posZ, mesh, animations) {
     this.angle = 0;
     this.speed = 3;
     this.jumping = false;
-    this.canJump = true;
-    this.jumpSpeed = 1;
-    this.jumpHeight = 50;
+    this.jumpSpeed = 3;
 
     this.loadModel = function () {
 
@@ -35,6 +33,7 @@ function Player(posX, posY, posZ, mesh, animations) {
         });
     }
 
+
     this.loadModel();
 
     this.movePlayer = function () {
@@ -51,22 +50,19 @@ function Player(posX, posY, posZ, mesh, animations) {
         playerObj.rotation.y = this.angle;
         playerObj.position.z = this.z;
         if (playerObj.mesh != undefined) playerObj.mesh.position.set(playerObj.position.x, playerObj.position.y, playerObj.position.z);
-        this.jump();
     }
 
-    this.jump = function () {
-        if (this.jumping) {
-            playerObj.position.y += this.jumpSpeed;
-            if (playerObj.position.y > this.jumpHeight) {
-                this.jumping = false;
-            }
-        }
-        if (!this.jumping && !this.canJump) {
+    this.jump = function (falling) {
+        if (falling) {
             playerObj.position.y -= this.jumpSpeed;
+        } else {
+            playerObj.position.y += this.jumpSpeed;
         }
         if (playerObj.position.y <= 0) {
-            this.canJump = true;
             playerObj.position.y = 0;
+            playerObj.jumpAction.stop();
+            playerObj.jumpAction.reset();
+            this.jumping = false;
         }
     }
 }
