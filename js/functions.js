@@ -129,7 +129,7 @@ function createStar(posX, posY, posZ) {
 }
 
 function createForest() {
-	addNewTree(1000, 30, 1000);
+	addNewTree(900, 30, 900);
 	addNewTree(-100, 30, 500);
 	addNewTree(700, 30, 250);
 	addNewTree(-400, 30, -300);
@@ -242,7 +242,7 @@ function createPlayerRigidBody(threeObject, physicsShape, mass, pos, quat) {
 	var body = new Ammo.btRigidBody(rbInfo);
 	threeObject.mesh.userData.physicsBody = body;
 	if (mass > 0) {
-		rigidBodies.push(threeObject.mesh);
+		if (!rigidBodies.includes(threeObject.mesh)) rigidBodies.push(threeObject.mesh);
 		// Disable deactivation
 		body.setActivationState(4);
 	}
