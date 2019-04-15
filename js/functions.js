@@ -240,6 +240,7 @@ function createPlayerRigidBody(threeObject, physicsShape, mass, pos, quat) {
 	physicsShape.calculateLocalInertia(mass, localInertia);
 	var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, physicsShape, localInertia);
 	var body = new Ammo.btRigidBody(rbInfo);
+	physicsWorld.removeRigidBody(threeObject.mesh.userData.physicsBody);
 	threeObject.mesh.userData.physicsBody = body;
 	if (mass > 0) {
 		if (!rigidBodies.includes(threeObject.mesh)) rigidBodies.push(threeObject.mesh);
