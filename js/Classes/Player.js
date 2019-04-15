@@ -33,6 +33,8 @@ function Player(posX, posY, posZ, mesh, animations) {
                     playerObj.walkAction = mixer.clipAction(playerObj.animations[0]);
                     playerObj.jumpAction = mixer.clipAction(playerObj.animations[2]);
                     playerObj.standByAction = mixer.clipAction(playerObj.animations[3]);
+                    playerObj.shape = new Ammo.btBoxShape(new Ammo.btVector3((playerObj.scale.x * 10) * 0.5, (playerObj.scale.y * 10) * 0.5, (playerObj.scale.z * 10) * 0.5));
+                    playerObj.shape.setMargin(margin);
                     scene.add(playerObj);
                 });
             });
@@ -49,7 +51,10 @@ function Player(posX, posY, posZ, mesh, animations) {
         playerObj.position.x = this.x;
         playerObj.rotation.y = this.angle;
         playerObj.position.z = this.z;
-        if (playerObj.mesh != undefined) playerObj.mesh.position.set(playerObj.position.x, playerObj.position.y, playerObj.position.z);
+        if (playerObj.mesh != undefined) {
+            playerObj.mesh.position.set(playerObj.position.x, playerObj.position.y, playerObj.position.z);
+            createPlayerRigidBody(playerObj, playerObj.shape, 1, playerObj.position, playerObj.quaternion);
+        }
     }
 
     this.jump = function () {

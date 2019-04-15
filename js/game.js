@@ -26,6 +26,8 @@ function init() {
 	setLight();
 	initPhysics();
 	createObjects();
+	createObstacle();
+	createForest();
 	window.addEventListener('resize', onWindowResize, false);
 	// stats
 	//stats = new Stats();

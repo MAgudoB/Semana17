@@ -128,11 +128,21 @@ function createStar(posX, posY, posZ) {
 	scene.add(newStar);
 }
 
-function onWindowResize() {
+function createForest() {
+	addNewTree(1000, 30, 1000);
+	addNewTree(-100, 30, 500);
+	addNewTree(700, 30, 250);
+	addNewTree(-400, 30, -300);
+}
 
+function addNewTree(posX, posY, posZ) {
+	var newTree = createTree(posX, posY, posZ);
+	//scene.add(newTree);
+}
+
+function onWindowResize() {
 	camera.aspect = window.innerWidth / window.innerHeight;
 	camera.updateProjectionMatrix();
-
 	renderer.setSize(window.innerWidth, window.innerHeight);
 
 }
@@ -178,6 +188,16 @@ function createObjects() {
 	brick.receiveShadow = true;
 }
 
+function createObstacle() {
+	var quat = new THREE.Quaternion(1, 0, 0, 1);
+	quat.setFromAxisAngle(new THREE.Vector3(-1, 0, 0), 30 * Math.PI / 180);
+	var obstacle = createParalellepiped(10, 1, 4, 0, new THREE.Vector3(30, 0, -500), quat, new THREE.MeshPhongMaterial({ color: 0x606060 }));
+	obstacle.scale.set(50, 50, 50);
+	obstacle.castShadow = true;
+	obstacle.receiveShadow = true;
+	scene.add(obstacle);
+}
+
 function createParalellepiped(sx, sy, sz, mass, pos, quat, material) {
 	var threeObject = new THREE.Mesh(new THREE.BoxBufferGeometry(sx, sy, sz, 1, 1, 1), material);
 	var shape = new Ammo.btBoxShape(new Ammo.btVector3(sx * 0.5, sy * 0.5, sz * 0.5));
@@ -202,6 +222,27 @@ function createRigidBody(threeObject, physicsShape, mass, pos, quat) {
 	scene.add(threeObject);
 	if (mass > 0) {
 		rigidBodies.push(threeObject);
+		// Disable deactivation
+		body.setActivationState(4);
+	}
+	physicsWorld.addRigidBody(body);
+}
+
+function createPlayerRigidBody(threeObject, physicsShape, mass, pos, quat) {
+	threeObject.position.copy(pos);
+	threeObject.quaternion.copy(quat);
+	var transform = new Ammo.btTransform();
+	transform.setIdentity();
+	transform.setOrigin(new Ammo.btVector3(pos.x, pos.y, pos.z));
+	transform.setRotation(new Ammo.btQuaternion(quat.x, quat.y, quat.z, quat.w));
+	var motionState = new Ammo.btDefaultMotionState(transform);
+	var localInertia = new Ammo.btVector3(0, 0, 0);
+	physicsShape.calculateLocalInertia(mass, localInertia);
+	var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, physicsShape, localInertia);
+	var body = new Ammo.btRigidBody(rbInfo);
+	threeObject.mesh.userData.physicsBody = body;
+	if (mass > 0) {
+		rigidBodies.push(threeObject.mesh);
 		// Disable deactivation
 		body.setActivationState(4);
 	}

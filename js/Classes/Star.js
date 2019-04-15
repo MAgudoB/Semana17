@@ -34,5 +34,6 @@ function Star(posX, posY, posZ) {
     var geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
     var mesh = new THREE.Mesh(geometry, materials);
     mesh.position.set(posX, posY, posZ);
+    mesh.name = "Star";
     return mesh;
 }
