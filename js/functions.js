@@ -186,13 +186,14 @@ function createObjects() {
 	brick2 = createParalellepiped(sx, sy, sz, mass, new THREE.Vector3(45, 100, 150), new THREE.Quaternion(0, 0, 0, 1), createMaterial());
 	brick.castShadow = true;
 	brick.receiveShadow = true;
+	brick3 = createParalellepiped(sx, sy, sz, mass, new THREE.Vector3(30, 500, -500), new THREE.Quaternion(0, 0, 0, 1), createMaterial());
 }
 
 function createObstacle() {
 	var quat = new THREE.Quaternion(1, 0, 0, 1);
 	quat.setFromAxisAngle(new THREE.Vector3(-1, 0, 0), 30 * Math.PI / 180);
-	var obstacle = createParalellepiped(10, 1, 4, 0, new THREE.Vector3(30, 0, -500), quat, new THREE.MeshPhongMaterial({ color: 0x606060 }));
-	obstacle.scale.set(50, 50, 50);
+	var obstacle = createParalellepiped(500, 50, 200, 0, new THREE.Vector3(30, 0, -500), quat, new THREE.MeshPhongMaterial({ color: 0x606060 }));
+	// obstacle.scale.set(50, 50, 50);
 	obstacle.castShadow = true;
 	obstacle.receiveShadow = true;
 	scene.add(obstacle);
@@ -240,10 +241,10 @@ function createPlayerRigidBody(threeObject, physicsShape, mass, pos, quat) {
 	physicsShape.calculateLocalInertia(mass, localInertia);
 	var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, physicsShape, localInertia);
 	var body = new Ammo.btRigidBody(rbInfo);
-	physicsWorld.removeRigidBody(threeObject.mesh.userData.physicsBody);
-	threeObject.mesh.userData.physicsBody = body;
+	physicsWorld.removeRigidBody(threeObject.userData.physicsBody);
+	threeObject.userData.physicsBody = body;
 	if (mass > 0) {
-		if (!rigidBodies.includes(threeObject.mesh)) rigidBodies.push(threeObject.mesh);
+		if (!rigidBodies.includes(threeObject)) rigidBodies.push(threeObject);
 		// Disable deactivation
 		body.setActivationState(4);
 	}

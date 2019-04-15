@@ -23,7 +23,7 @@ var playerObj = new THREE.Object3D();
 var ground = new THREE.Object3D();
 
 // Physics variables
-var gravityConstant = - 9.8;
+var gravityConstant = -70;
 var collisionConfiguration;
 var dispatcher;
 var broadphase;

@@ -18,7 +18,7 @@ function init() {
 	setControls();
 	setScene();
 	//setModel();
-	createStar(50, 100, 50);
+	createStar(50, 100, -450);
 	createStar(300, 100, 50);
 	createStar(0, 100, 250);
 	player = new Player(0, 100, 0, undefined, undefined);
@@ -37,6 +37,7 @@ function init() {
 function animate() {
 	player.movePlayer();
 	for (var i in stars) {
+		stars[i].rotation.y += 0.1;
 		var collided = collide(stars[i]);
 		if (collided) {
 			scene.remove(stars[i]);

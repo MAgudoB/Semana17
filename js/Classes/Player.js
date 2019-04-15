@@ -53,7 +53,7 @@ function Player(posX, posY, posZ, mesh, animations) {
         playerObj.position.z = this.z;
         if (playerObj.mesh != undefined) {
             playerObj.mesh.position.set(playerObj.position.x, playerObj.position.y, playerObj.position.z);
-            createPlayerRigidBody(playerObj, playerObj.shape, 1, playerObj.position, playerObj.quaternion);
+            createPlayerRigidBody(playerObj.mesh, playerObj.shape, 1, playerObj.position, playerObj.quaternion);
         }
     }
 
